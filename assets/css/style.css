@@ -11,14 +11,14 @@
     margin: auto;
 }
 
-.btn-userSelection-1{
+.btn-userSelection-rock{
     background-image: url(../images/playerHandRock.png);
 }
 
-.btn-userSelection-2{
+.btn-userSelection-paper{
     background-image: url(../images/playerHandPaper.png);
 }
 
-.btn-userSelection-3{
+.btn-userSelection-scissors{
     background-image: url(../images/playerHandScissors.png);
 }
