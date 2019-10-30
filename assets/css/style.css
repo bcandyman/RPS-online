@@ -1,0 +1,24 @@
+.card{
+    margin: 0 auto;
+}
+
+.btn{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100px;
+    width: 100px;
+    margin: auto;
+}
+
+.btn-userSelection-1{
+    background-image: url(../images/playerHandRock.png);
+}
+
+.btn-userSelection-2{
+    background-image: url(../images/playerHandPaper.png);
+}
+
+.btn-userSelection-3{
+    background-image: url(../images/playerHandScissors.png);
+}
