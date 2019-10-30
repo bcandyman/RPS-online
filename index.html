@@ -6,17 +6,45 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>RPS Online</title>
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/6.0.4/firebase-database.js"></script>
 
 
 </head>
-<body>
-    
 
-    
+<body>
+    <div class="container">
+        <div class="jumbotron"></div>
+        <div class="card mb-3 w-50">
+            <d6iv class="row no-gutters">
+            <div class="col-md-6">
+                <img id="playerImg" src="" class="card-img" alt="...">
+            </div>
+            <div class="col-md-6">
+                <img id="opponentImg" src="" class="card-img" alt="...">
+            </div>
+        </div>
+        <div class="card w-50">
+            <div class="card-body">
+                <h5 class="card-title">Make your selection</h5>
+                <div class="btn-group d-inline" role="group" aria-label="Basic example">
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="button" class="btn btn-userSelection-1">  </button>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-userSelection-2"></button>
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-userSelection-3"></button>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="assets/javascript/app.js"></script>
 </body>
