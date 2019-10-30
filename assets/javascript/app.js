@@ -13,9 +13,12 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 var playerNum = ""
+var opponentNum = ""
 var gameRoomId = ""
 var playerName = "Jose"
 var gameRoomRefPath = ""
+var P1Pick = "none"
+var P2Pick = "none"
 
 
 function findRoom(snapshot){
@@ -39,6 +42,7 @@ function findRoom(snapshot){
             if (P1IsActive === "false"){
                 gameRoomId = roomSnapshot.key
                 gameRoomRefPath = database.ref(gameRoomId)
+                opponentNum = 2
                 playerNum = 1
             }
 
@@ -46,6 +50,7 @@ function findRoom(snapshot){
             else if (P2IsActive === "false"){
                 gameRoomId = roomSnapshot.key
                 gameRoomRefPath = database.ref(gameRoomId)
+                opponentNum = 1
                 playerNum = 2
             }
             
@@ -62,10 +67,13 @@ function findRoom(snapshot){
         database.ref(gameRoomRefPath).set({
             P1Name: "",
             P1IsActive: "false",
+            P1Selection: "none",
             P2Name: "",
-            P2IsActive: "false"
+            P2IsActive: "false",
+            P2Selection: "none"
         })
         playerNum = 1
+        opponentNum = 2
     }
 
 
@@ -84,6 +92,23 @@ database.ref().once('value', function(snapshot) {
 });
 
 
+$(".btn").on("click", function(){
+
+    var buttonVal = $(this).attr("value")
+    $("#playerImg").attr("src", "assets/images/playerHand" + buttonVal + ".png")
+
+    database.ref(gameRoomId).update({["P" + playerNum + "Selection"]: buttonVal})
+})
+
+
+function bothPlayersHavePicked(){
+    if (P1Pick === "none" || P2Pick === "none"){
+        return false
+    }
+    else{
+        return true
+    }
+}
 
 
 
@@ -93,6 +118,107 @@ database.ref().once('value', function(snapshot) {
             ["P" + playerNum + "IsActive"]: "false",
             ["P" + playerNum + "Name"]: ""
         })
+
+        database.ref(gameRoomId + "/P1Selection").on("value",function(snapshot){
+            P1Pick=snapshot.val()
+
+            console.log("Changed")
+            testResult(snapshot)
+        })
+
+        database.ref(gameRoomId + "/P2Selection").on("value",function(snapshot){
+            P2Pick=snapshot.val()
+
+            console.log("Changed")
+            testResult(snapshot)
+        })
     }, 2000);
 
 
+function testResult (snapshot){
+    // var P1Pick = database.ref(gameRoomId + "/P1Selection").get()
+    console.log(playerNum)
+    if (playerNum === 1){
+        if (P1Pick === "rock"){
+            if (P2Pick === "rock"){
+                console.log("draw")
+            }
+            else if (P2Pick === "paper"){
+                console.log("lose")
+            }
+            else if (P2Pick === "scissors"){
+                console.log("win")
+            }
+        }
+        else if (P1Pick === "paper"){
+            if (P2Pick === "rock"){
+                console.log("win")
+            }
+            else if (P2Pick === "paper"){
+                console.log("draw")
+            }
+            else if (P2Pick === "scissors"){
+                console.log("lose")
+            }
+        }
+        else if (P1Pick === "scissors"){
+            if (P2Pick === "rock"){
+                console.log("lose")
+            }
+            else if (P2Pick === "paper"){
+                console.log("win")
+            }
+            else if (P2Pick === "scissors"){
+                console.log("draw")
+            }
+        }
+    }
+    // }
+
+    else if (playerNum === 2){
+        if (P2Pick === "rock"){
+            if (P1Pick === "rock"){
+                console.log("draw")
+            }
+            else if (P1Pick === "paper"){
+                console.log("lose")
+            }
+            else if (P1Pick === "scissors"){
+                console.log("win")
+            }
+        }
+        else if (P2Pick === "paper"){
+            if (P1Pick === "rock"){
+                console.log("win")
+            }
+            else if (P1Pick === "paper"){
+                console.log("draw")
+            }
+            else if (P1Pick === "scissors"){
+                console.log("lose")
+            }
+        }
+        else if (P2Pick === "scissors"){
+            if (P1Pick === "rock"){
+                console.log("lose")
+            }
+            else if (P1Pick === "paper"){
+                console.log("win")
+            }
+            else if (P1Pick === "scissors"){
+                console.log("draw")
+            }
+        }
+    }
+
+    if (bothPlayersHavePicked()){
+        if (playerNum === 1) {
+            $("#opponentImg").attr("src", "assets/images/opponentHand" + P2Pick + ".png")
+        }
+        else{
+            $("#opponentImg").attr("src", "assets/images/opponentHand" + P1Pick + ".png")
+        }
+    }
+    console.log ("P1Pick: " + P1Pick)
+    console.log("P2Pick: " + P2Pick)
+}
