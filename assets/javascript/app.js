@@ -139,36 +139,36 @@ function testResult (snapshot){
     // var P1Pick = database.ref(gameRoomId + "/P1Selection").get()
     console.log(playerNum)
     if (playerNum === 1){
-        if (P1Pick === "rock"){
-            if (P2Pick === "rock"){
+        if (P1Pick === "Rock"){
+            if (P2Pick === "Rock"){
                 console.log("draw")
             }
-            else if (P2Pick === "paper"){
+            else if (P2Pick === "Paper"){
                 console.log("lose")
             }
-            else if (P2Pick === "scissors"){
+            else if (P2Pick === "Scissors"){
                 console.log("win")
             }
         }
-        else if (P1Pick === "paper"){
-            if (P2Pick === "rock"){
+        else if (P1Pick === "Paper"){
+            if (P2Pick === "Rock"){
                 console.log("win")
             }
-            else if (P2Pick === "paper"){
+            else if (P2Pick === "Paper"){
                 console.log("draw")
             }
-            else if (P2Pick === "scissors"){
+            else if (P2Pick === "Scissors"){
                 console.log("lose")
             }
         }
-        else if (P1Pick === "scissors"){
-            if (P2Pick === "rock"){
+        else if (P1Pick === "Scissors"){
+            if (P2Pick === "Rock"){
                 console.log("lose")
             }
-            else if (P2Pick === "paper"){
+            else if (P2Pick === "Paper"){
                 console.log("win")
             }
-            else if (P2Pick === "scissors"){
+            else if (P2Pick === "Scissors"){
                 console.log("draw")
             }
         }
@@ -176,36 +176,36 @@ function testResult (snapshot){
     // }
 
     else if (playerNum === 2){
-        if (P2Pick === "rock"){
-            if (P1Pick === "rock"){
+        if (P2Pick === "Rock"){
+            if (P1Pick === "Rock"){
                 console.log("draw")
             }
-            else if (P1Pick === "paper"){
+            else if (P1Pick === "Paper"){
                 console.log("lose")
             }
-            else if (P1Pick === "scissors"){
+            else if (P1Pick === "Scissors"){
                 console.log("win")
             }
         }
-        else if (P2Pick === "paper"){
-            if (P1Pick === "rock"){
+        else if (P2Pick === "Paper"){
+            if (P1Pick === "Rock"){
                 console.log("win")
             }
-            else if (P1Pick === "paper"){
+            else if (P1Pick === "Paper"){
                 console.log("draw")
             }
-            else if (P1Pick === "scissors"){
+            else if (P1Pick === "Scissors"){
                 console.log("lose")
             }
         }
-        else if (P2Pick === "scissors"){
-            if (P1Pick === "rock"){
+        else if (P2Pick === "Scissors"){
+            if (P1Pick === "Rock"){
                 console.log("lose")
             }
-            else if (P1Pick === "paper"){
+            else if (P1Pick === "Paper"){
                 console.log("win")
             }
-            else if (P1Pick === "scissors"){
+            else if (P1Pick === "Scissors"){
                 console.log("draw")
             }
         }
