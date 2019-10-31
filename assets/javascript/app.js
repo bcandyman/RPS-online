@@ -68,9 +68,11 @@ function findRoom(snapshot){
             P1Name: "",
             P1IsActive: "false",
             P1Selection: "none",
+            P1Chat: "",
             P2Name: "",
             P2IsActive: "false",
-            P2Selection: "none"
+            P2Selection: "none",
+            P2Chat: ""
         })
         playerNum = 1
         opponentNum = 2
@@ -92,7 +94,7 @@ database.ref().once('value', function(snapshot) {
 });
 
 
-$(".btn").on("click", function(){
+$(".btn-userSelection").on("click", function(){
 
     var buttonVal = $(this).attr("value")
     $("#playerImg").attr("src", "assets/images/playerHand" + buttonVal + ".png")
@@ -112,11 +114,38 @@ function bothPlayersHavePicked(){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Wait 2 seconds to allow gameRoomId to be set before setting on disconnect
     setTimeout(() => {
         database.ref(gameRoomId).onDisconnect().update({
             ["P" + playerNum + "IsActive"]: "false",
-            ["P" + playerNum + "Name"]: ""
+            ["P" + playerNum + "Name"]: "",
+            P1Chat:"player disconnected",
+            P2Chat:"player disconnected",
         })
 
         database.ref(gameRoomId + "/P1Selection").on("value",function(snapshot){
@@ -132,8 +161,59 @@ function bothPlayersHavePicked(){
             console.log("Changed")
             testResult(snapshot)
         })
+
+
+
+        database.ref(gameRoomId + "/P1Chat").on("value",function(snapshot){
+            P1Chat=snapshot.val()
+            updateChatWindow(P1Chat)
+        })
+
+        database.ref(gameRoomId + "/P2Chat").on("value",function(snapshot){
+            P2Chat=snapshot.val()
+            updateChatWindow(P2Chat)
+        })
     }, 2000);
 
+
+
+
+
+
+
+
+
+    function updateChatWindow(str){
+        $("#chatWindow").prepend( str + "\n" )
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 function testResult (snapshot){
     // var P1Pick = database.ref(gameRoomId + "/P1Selection").get()
@@ -173,7 +253,6 @@ function testResult (snapshot){
             }
         }
     }
-    // }
 
     else if (playerNum === 2){
         if (P2Pick === "Rock"){
@@ -222,3 +301,28 @@ function testResult (snapshot){
     console.log ("P1Pick: " + P1Pick)
     console.log("P2Pick: " + P2Pick)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$("#chatSubmit").on("click",function(){
+    var chatText = $("#chatText").val()
+    console.log(chatText)
+    database.ref(gameRoomId).update({["P" + playerNum + "Chat"]: chatText})
+    $("#chatText").val("")
+})
