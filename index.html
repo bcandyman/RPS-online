@@ -16,8 +16,9 @@
 
 <body>
     <div class="container">
-        <div class="jumbotron"></div>
-        <div class="card mb-3 w-50">
+
+        <div class="jumbotron mt-3 themeColor1"></div>
+        <div class="card mb-3 w-50 themeColor1">
             <d6iv class="row no-gutters">
             <div class="col-md-6">
                 <img id="playerImg" src="assets/images/blank.png" class="card-img" alt="...">
@@ -26,24 +27,39 @@
                 <img id="opponentImg" src="assets/images/blank.png" class="card-img" alt="...">
             </div>
         </div>
-        <div class="card w-50">
+
+        <div class="card mb-3 w-50 themeColor1">
             <div class="card-body">
                 <h5 class="card-title">Make your selection</h5>
                 <div class="btn-group d-inline" role="group" aria-label="Basic example">
                     <div class="row">
                         <div class="col-4">
-                            <button type="button" id="btn-rock" class="btn btn-userSelection-rock img-fluid" value="Rock"></button>
+                            <button type="button" id="btn-rock" class="btn btn-userSelection btn-userSelection-rock img-fluid" value="Rock"></button>
                         </div>
                         <div class="col-4">
-                            <button type="button" id="btn-paper" class="btn btn-userSelection-paper img-fluid" value="Paper"></button>
+                            <button type="button" id="btn-paper" class="btn btn-userSelection btn-userSelection-paper img-fluid" value="Paper"></button>
                         </div>
                         <div class="col-4">
-                            <button type="button" id="btn-scissors" class="btn btn-userSelection-scissors img-fluid" value="Scissors"></button>
+                            <button type="button" id="btn-scissors" class="btn btn-userSelection btn-userSelection-scissors img-fluid" value="Scissors"></button>
                         </div>  
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="card w-50 themeColor1">
+            <div class="card-body">
+                <h6 class="card-title">Player Chat</h6>
+                <div class="btn-group d-inline" role="group" aria-label="Basic example">
+                    <div class="row">
+                        <textarea class="form-control mb-1 themeColor2" id="chatText" rows="3"></textarea>
+                            <textarea disabled class="form-control mb-1 themeColor2" id="chatWindow" rows="2"></textarea>
+                        <button type="button" class="btn btn-primary themeColor2" id="chatSubmit">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
     </div>
 
 <script
