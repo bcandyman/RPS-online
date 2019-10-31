@@ -19,6 +19,38 @@ var playerName = "Jose"
 var gameRoomRefPath = ""
 var P1Pick = "none"
 var P2Pick = "none"
+var isFlyOutActive = false; //tracks status of flyout
+
+
+
+function flyout(){
+    // event.stopPropagation()
+    if(!isFlyOutActive){
+        var flyoutDiv = $("<div>")
+        flyoutDiv.attr("id","flyoutName")
+        flyoutDiv.addClass("flyout")
+        flyoutDiv.html($("<H3>").text("Please enter your name"))
+        flyoutDiv.append($("<hr />"))
+        flyoutDiv.append('<input type="text" id = "inputName" class="form-control mb-2" placeholder="First name">')
+        flyoutDiv.append('<button type="button" class="btn btn-primary themeColor2" id="submitName">Lets Go!</button>')
+        $(".container").append(flyoutDiv)
+        isFlyOutActive = true;
+    }
+    else{
+        closeFlyout()
+    }
+}
+
+
+
+//Closes flyout
+function closeFlyout(){
+    if (isFlyOutActive){
+        $("#flyoutInstructions").remove()
+        isFlyOutActive = false;
+    }
+}
+
 
 
 function findRoom(snapshot){
@@ -88,21 +120,6 @@ function findRoom(snapshot){
 }
 
 
-
-database.ref().once('value', function(snapshot) {
-    findRoom(snapshot)
-});
-
-
-$(".btn-userSelection").on("click", function(){
-
-    var buttonVal = $(this).attr("value")
-    $("#playerImg").attr("src", "assets/images/playerHand" + buttonVal + ".png")
-
-    database.ref(gameRoomId).update({["P" + playerNum + "Selection"]: buttonVal})
-})
-
-
 function bothPlayersHavePicked(){
     if (P1Pick === "none" || P2Pick === "none"){
         return false
@@ -110,6 +127,11 @@ function bothPlayersHavePicked(){
     else{
         return true
     }
+}
+
+
+function updateChatWindow(str){
+    $("#chatWindow").prepend( str + "\n" )
 }
 
 
@@ -124,6 +146,12 @@ function bothPlayersHavePicked(){
 
 
 
+database.ref().once('value', function(snapshot) {
+    findRoom(snapshot)
+});
+
+
+flyout()
 
 
 
@@ -134,6 +162,13 @@ function bothPlayersHavePicked(){
 
 
 
+$(".btn-userSelection").on("click", function(){
+
+    var buttonVal = $(this).attr("value")
+    $("#playerImg").attr("src", "assets/images/playerHand" + buttonVal + ".png")
+
+    database.ref(gameRoomId).update({["P" + playerNum + "Selection"]: buttonVal})
+})
 
 
 
@@ -183,9 +218,7 @@ function bothPlayersHavePicked(){
 
 
 
-    function updateChatWindow(str){
-        $("#chatWindow").prepend( str + "\n" )
-    }
+
 
 
 
