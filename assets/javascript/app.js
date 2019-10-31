@@ -24,6 +24,11 @@ var isFlyOutActive = false; //tracks status of flyout
 
 
 
+var P1Name = ""
+var P2Name = ""
+
+
+
 function flyout(){
     // event.stopPropagation()
     if(!isFlyOutActive){
@@ -210,12 +215,26 @@ $(document).on("click", "#submitName", function(){
 
         database.ref(gameRoomId + "/P1Chat").on("value",function(snapshot){
             P1Chat=snapshot.val()
-            updateChatWindow(P1Chat)
+            updateChatWindow(P1Name + ": " + P1Chat)
         })
 
         database.ref(gameRoomId + "/P2Chat").on("value",function(snapshot){
             P2Chat=snapshot.val()
-            updateChatWindow(P2Chat)
+            updateChatWindow(P2Name + ": " + P2Chat)
+        })
+
+
+
+
+
+        database.ref(gameRoomId + "/P1Name").on("value",function(snapshot){
+            P1Name=snapshot.val()
+            console.log(P1Name)
+        })
+
+        database.ref(gameRoomId + "/P2Name").on("value",function(snapshot){
+            P2Name=snapshot.val()
+            console.log(P2Name)
         })
     }, 2000);
 
