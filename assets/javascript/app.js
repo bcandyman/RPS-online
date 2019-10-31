@@ -181,6 +181,7 @@ $(document).on("click", "#submitName", function(){
     playerName = $("#inputName").val()
     gameRoomRefPath.update({
         ["P" + playerNum + "Name"]: playerName,
+        ["P" + playerNum + "Chat"]: "player joined",
     })
     closeFlyout()
 })
