@@ -13,9 +13,10 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 var playerNum = ""
+var opponentName = ""
 var opponentNum = ""
 var gameRoomId = ""
-var playerName = "Jose"
+var playerName = ""
 var gameRoomRefPath = ""
 var P1Pick = "none"
 var P2Pick = "none"
@@ -46,7 +47,7 @@ function flyout(){
 //Closes flyout
 function closeFlyout(){
     if (isFlyOutActive){
-        $("#flyoutInstructions").remove()
+        $("#flyoutName").remove()
         isFlyOutActive = false;
     }
 }
@@ -170,6 +171,14 @@ $(".btn-userSelection").on("click", function(){
     database.ref(gameRoomId).update({["P" + playerNum + "Selection"]: buttonVal})
 })
 
+
+$(document).on("click", "#submitName", function(){
+    playerName = $("#inputName").val()
+    gameRoomRefPath.update({
+        ["P" + playerNum + "Name"]: playerName,
+    })
+    closeFlyout()
+})
 
 
 
