@@ -1,8 +1,11 @@
+body{
+    background-image: url("../images/dark-triangles.png");
+}
 .card{
     margin: 0 auto;
 }
 
-.btn{
+.btn-userSelection{
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -21,4 +24,13 @@
 
 .btn-userSelection-scissors{
     background-image: url(../images/playerHandScissors.png);
+}
+
+.themeColor1{
+    background-color: #19967d;
+}
+
+.themeColor2{
+    background-color: white;
+    color: darkgray;
 }
