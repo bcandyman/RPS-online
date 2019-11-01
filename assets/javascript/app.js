@@ -378,6 +378,14 @@ function testResult (snapshot){
         else{
             $("#opponentImg").attr("src", "assets/images/opponentHand" + P1Pick + ".png")
         }
+        setTimeout(() => {
+            database.ref(gameRoomRefPath).set({
+                P1Selection: "none",
+                P2Selection: "none"
+            })
+            $("#playerImg").attr("src","assets/images/blank.png")
+            $("#opponentImg").attr("src","assets/images/blank.png")
+        }, 3000);
     }
     console.log ("P1Pick: " + P1Pick)
     console.log("P2Pick: " + P2Pick)
