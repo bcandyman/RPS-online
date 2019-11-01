@@ -126,6 +126,8 @@ function findRoom(snapshot){
 }
 
 
+//checks if both players have made their selection
+//this returns true or false, true means both players have made a selection
 function bothPlayersHavePicked(){
     if (P1Pick === "none" || P2Pick === "none"){
         return false
@@ -136,6 +138,9 @@ function bothPlayersHavePicked(){
 }
 
 
+//this function prints a players message to the database
+//this function will be triggered upon either players send message click.
+//str is the message to be displayed. 
 function updateChatWindow(str){
     $("#chatWindow").prepend( str + "\n" )
 }
@@ -145,18 +150,12 @@ function updateChatWindow(str){
 
 
 
-
-
-
-
-
-
-
+//this is fired upon page load and looks on the database for an empty slot in a game room.
 database.ref().once('value', function(snapshot) {
     findRoom(snapshot)
 });
 
-
+//used to capture player's name upon entry
 flyout()
 
 
@@ -164,12 +163,8 @@ flyout()
 
 
 
-
-
-
-
+//triggered when a player makes a rock, paper or scissor selection.
 $(".btn-userSelection").on("click", function(){
-
     var buttonVal = $(this).attr("value")
     $("#playerImg").attr("src", "assets/images/playerHand" + buttonVal + ".png")
 
@@ -177,78 +172,93 @@ $(".btn-userSelection").on("click", function(){
 })
 
 
+//used to accept player name when flyout is active
 $(document).on("click", "#submitName", function(){
+    
     playerName = $("#inputName").val()
-    gameRoomRefPath.update({
-        ["P" + playerNum + "Name"]: playerName,
-        ["P" + playerNum + "Chat"]: "player joined",
-    })
-    closeFlyout()
+    //check if player input text as a name
+    if (playerName.trim().length !== 0){
+        gameRoomRefPath.update({
+            ["P" + playerNum + "Name"]: playerName,
+            ["P" + playerNum + "Chat"]: "player joined",
+        })
+        $("button").removeAttr("disabled","")
+        $("#chatText").removeAttr("disabled","")
+        chatText
+        closeFlyout()
+    }
+})
+
+
+//Chat submit button
+$("#chatSubmit").on("click",function(){
+    var chatText = $("#chatText").val()
+    console.log(chatText)
+    database.ref(gameRoomId).update({["P" + playerNum + "Chat"]: chatText})
+    $("#chatText").val("")
 })
 
 
 
 
-    //Wait 2 seconds to allow gameRoomId to be set before setting on disconnect
-    setTimeout(() => {
-        database.ref(gameRoomId).onDisconnect().update({
-            ["P" + playerNum + "IsActive"]: "false",
-            ["P" + playerNum + "Name"]: "",
-            P1Chat:"player disconnected",
-            P2Chat:"player disconnected",
-        })
+//Wait 2 seconds to allow gameRoomId to be set before setting on disconnect
+setTimeout(() => {
 
-        database.ref(gameRoomId + "/P1Selection").on("value",function(snapshot){
-            P1Pick=snapshot.val()
-
-            console.log("Changed")
-            testResult(snapshot)
-        })
-
-        database.ref(gameRoomId + "/P2Selection").on("value",function(snapshot){
-            P2Pick=snapshot.val()
-
-            console.log("Changed")
-            testResult(snapshot)
-        })
+    //On disconnect, will deactivate player in database.
+    //On disconnect, will display disconnect message in chat window.
+    database.ref(gameRoomId).onDisconnect().update({
+        ["P" + playerNum + "IsActive"]: "false",
+        ["P" + playerNum + "Name"]: "",
+        P1Chat:"player disconnected",
+        P2Chat:"player disconnected",
+    })
 
 
+    //these monitor changes in players' selection
+    database.ref(gameRoomId + "/P1Selection").on("value",function(snapshot){
+        P1Pick=snapshot.val()
 
-        database.ref(gameRoomId + "/P1Chat").on("value",function(snapshot){
-            P1Chat=snapshot.val()
-            updateChatWindow(P1Name + ": " + P1Chat)
-        })
+        console.log("Changed")
+        testResult(snapshot)
+    })
 
-        database.ref(gameRoomId + "/P2Chat").on("value",function(snapshot){
-            P2Chat=snapshot.val()
-            updateChatWindow(P2Name + ": " + P2Chat)
-        })
+    database.ref(gameRoomId + "/P2Selection").on("value",function(snapshot){
+        P2Pick=snapshot.val()
 
-
-
-
-
-        database.ref(gameRoomId + "/P1Name").on("value",function(snapshot){
-            P1Name=snapshot.val()
-            console.log(P1Name)
-        })
-
-        database.ref(gameRoomId + "/P2Name").on("value",function(snapshot){
-            P2Name=snapshot.val()
-            console.log(P2Name)
-        })
-    }, 2000);
+        console.log("Changed")
+        testResult(snapshot)
+    })
 
 
+    //monitors if either player has sent a new message within the chat window
+    database.ref(gameRoomId + "/P1Chat").on("value",function(snapshot){
+        P1Chat=snapshot.val()
+        updateChatWindow(P1Name + ": " + P1Chat)
+    })
+
+    database.ref(gameRoomId + "/P2Chat").on("value",function(snapshot){
+        P2Chat=snapshot.val()
+        updateChatWindow(P2Name + ": " + P2Chat)
+    })
 
 
+    //monitors a name change in the database.
+    //This is only triggered if a new player enters the game room.
+    database.ref(gameRoomId + "/P1Name").on("value",function(snapshot){
+        P1Name=snapshot.val()
+        console.log(P1Name)
+    })
 
-
+    database.ref(gameRoomId + "/P2Name").on("value",function(snapshot){
+        P2Name=snapshot.val()
+        console.log(P2Name)
+    })
+}, 2000);
 
 
 
-
-
+// $(".btn-userSelection").attr("disabled","")
+// $(".btn-userSelection").removeAttr("disabled","")
 
 
 
@@ -275,10 +285,17 @@ $(document).on("click", "#submitName", function(){
 
 
 
-    
+
+
+
+
+
+
+
+
+//Way huge function I have not idea how to make smaller...
 
 function testResult (snapshot){
-    // var P1Pick = database.ref(gameRoomId + "/P1Selection").get()
     console.log(playerNum)
     if (playerNum === 1){
         if (P1Pick === "Rock"){
@@ -352,6 +369,8 @@ function testResult (snapshot){
         }
     }
 
+
+    //Displays opponent's pick only if both users have made their selection
     if (bothPlayersHavePicked()){
         if (playerNum === 1) {
             $("#opponentImg").attr("src", "assets/images/opponentHand" + P2Pick + ".png")
@@ -363,28 +382,3 @@ function testResult (snapshot){
     console.log ("P1Pick: " + P1Pick)
     console.log("P2Pick: " + P2Pick)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-$("#chatSubmit").on("click",function(){
-    var chatText = $("#chatText").val()
-    console.log(chatText)
-    database.ref(gameRoomId).update({["P" + playerNum + "Chat"]: chatText})
-    $("#chatText").val("")
-})
