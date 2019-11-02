@@ -40,7 +40,7 @@ function flyout(){
         flyoutDiv.html($("<H3>").text("Please enter your name"))
         flyoutDiv.append($("<hr />"))
         flyoutDiv.append('<input type="text" id = "inputName" class="form-control mb-2" placeholder="First name">')
-        flyoutDiv.append('<button type="button" class="btn btn-primary themeColor2" id="submitName">Lets Go!</button>')
+        flyoutDiv.append('<button type="button" class="btn btn-dark themeColor2" id="submitName">Lets Go!</button>')
         $(".container").append(flyoutDiv)
         isFlyOutActive = true;
     }
@@ -148,6 +148,25 @@ function updateChatWindow(str){
 }
 
 
+//Used to start the match
+//Will be called on enter of inputName field or 'Lets Go' button click
+function startMatch(){
+    //set playerName to value of #inputName
+    playerName = $("#inputName").val()
+    //check if player input text is a something
+    if (playerName.trim().length !== 0){
+        gameRoomRefPath.update({
+            ["P" + playerNum + "Name"]: playerName,
+            ["P" + playerNum + "Chat"]: "player joined",
+        })
+        $("button").removeAttr("disabled","")
+        $("#chatText").removeAttr("disabled","")
+        chatText
+        closeFlyout()
+    }
+}
+
+
 
 
 
@@ -176,19 +195,7 @@ $(".btn-userSelection").on("click", function(){
 
 //used to accept player name when flyout is active
 $(document).on("click", "#submitName", function(){
-    
-    playerName = $("#inputName").val()
-    //check if player input text as a name
-    if (playerName.trim().length !== 0){
-        gameRoomRefPath.update({
-            ["P" + playerNum + "Name"]: playerName,
-            ["P" + playerNum + "Chat"]: "player joined",
-        })
-        $("button").removeAttr("disabled","")
-        $("#chatText").removeAttr("disabled","")
-        chatText
-        closeFlyout()
-    }
+    startMatch()
 })
 
 
@@ -199,6 +206,29 @@ $("#chatSubmit").on("click",function(){
     database.ref(gameRoomId).update({["P" + playerNum + "Chat"]: chatText})
     $("#chatText").val("")
 })
+
+
+//For if user presses enter while inputting their name upon entrance of the room
+$(document).on("keypress", function(event){
+    var keyCode = event.originalEvent.keyCode
+    var targetId = event.target.id
+    if (keyCode === 13 && targetId === "inputName") {
+        startMatch()
+        return false
+    }
+})
+
+
+//If user presses enter while in the chat window
+$("#chatText").keypress(function(event) {
+    var keyCode = event.originalEvent.keyCode
+    console.log(keyCode)
+    console.log (event)
+    if (keyCode === 13) {
+        $("#chatSubmit").click();
+        return false
+    }
+});
 
 
 
@@ -256,11 +286,6 @@ setTimeout(() => {
         console.log(P2Name)
     })
 }, 2000);
-
-
-
-// $(".btn-userSelection").attr("disabled","")
-// $(".btn-userSelection").removeAttr("disabled","")
 
 
 
@@ -392,9 +417,11 @@ function testResult (snapshot){
         else{
             $("#opponentImg").attr("src", "assets/images/opponentHand" + P1Pick + ".png")
         }
-
+        $(".btn-userSelection").attr("disabled","disabled")
+        
         $("#wins").text(wins)
         $("#losses").text(losses)
+        
         setTimeout(() => {
             database.ref(gameRoomRefPath).update({
                 P1Selection: "none",
@@ -402,8 +429,10 @@ function testResult (snapshot){
             })
             $("#playerImg").attr("src","assets/images/blank.png")
             $("#opponentImg").attr("src","assets/images/blank.png")
+            $(".btn-userSelection").removeAttr("disabled","")
         }, 3000);
     }
     console.log ("P1Pick: " + P1Pick)
     console.log("P2Pick: " + P2Pick)
 }
+
