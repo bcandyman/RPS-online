@@ -30,14 +30,15 @@ body{
     background-color: #19967d;
     border-radius: 10px;
     color: black;
-    left: 240px;
+    left: 0px;
+    right: 0px;
     position: absolute;
     max-width: 400px;
     top: 100px;
     z-index: 1;
     border: 1px solid;
     padding: 10px;
-    margin: 0 50px;
+    margin: auto;
     box-shadow: 5px 10px 8px black;
 }
 
@@ -48,4 +49,9 @@ body{
 .themeColor2{
     background-color: white;
     color: darkgray;
+}
+
+.winslosses{
+    display: inline;
+    margin-left: 15px;
 }
