@@ -1,6 +1,7 @@
 body{
     background-image: url("../images/dark-triangles.png");
 }
+
 .card{
     margin: 0 auto;
 }
@@ -44,11 +45,6 @@ body{
 
 .themeColor1{
     background-color: #19967d;
-}
-
-.themeColor2{
-    background-color: white;
-    color: darkgray;
 }
 
 .winslosses{
