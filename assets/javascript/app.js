@@ -21,6 +21,8 @@ var gameRoomRefPath = ""
 var P1Pick = "none"
 var P2Pick = "none"
 var isFlyOutActive = false; //tracks status of flyout
+var wins = 0
+var losses = 0
 
 
 
@@ -304,28 +306,34 @@ function testResult (snapshot){
             }
             else if (P2Pick === "Paper"){
                 console.log("lose")
+                losses++
             }
             else if (P2Pick === "Scissors"){
                 console.log("win")
+                wins++
             }
         }
         else if (P1Pick === "Paper"){
             if (P2Pick === "Rock"){
                 console.log("win")
+                wins++
             }
             else if (P2Pick === "Paper"){
                 console.log("draw")
             }
             else if (P2Pick === "Scissors"){
                 console.log("lose")
+                losses++
             }
         }
         else if (P1Pick === "Scissors"){
             if (P2Pick === "Rock"){
                 console.log("lose")
+                losses++
             }
             else if (P2Pick === "Paper"){
                 console.log("win")
+                wins++
             }
             else if (P2Pick === "Scissors"){
                 console.log("draw")
@@ -340,28 +348,34 @@ function testResult (snapshot){
             }
             else if (P1Pick === "Paper"){
                 console.log("lose")
+                losses++
             }
             else if (P1Pick === "Scissors"){
                 console.log("win")
+                wins++
             }
         }
         else if (P2Pick === "Paper"){
             if (P1Pick === "Rock"){
                 console.log("win")
+                wins++
             }
             else if (P1Pick === "Paper"){
                 console.log("draw")
             }
             else if (P1Pick === "Scissors"){
                 console.log("lose")
+                losses++
             }
         }
         else if (P2Pick === "Scissors"){
             if (P1Pick === "Rock"){
                 console.log("lose")
+                losses++
             }
             else if (P1Pick === "Paper"){
                 console.log("win")
+                wins++
             }
             else if (P1Pick === "Scissors"){
                 console.log("draw")
@@ -378,10 +392,13 @@ function testResult (snapshot){
         else{
             $("#opponentImg").attr("src", "assets/images/opponentHand" + P1Pick + ".png")
         }
+
+        $("#wins").text(wins)
+        $("#losses").text(losses)
         setTimeout(() => {
-            database.ref(gameRoomRefPath).set({
+            database.ref(gameRoomRefPath).update({
                 P1Selection: "none",
-                P2Selection: "none"
+                P2Selection: "none",
             })
             $("#playerImg").attr("src","assets/images/blank.png")
             $("#opponentImg").attr("src","assets/images/blank.png")
